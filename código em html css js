@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MoodDrop</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#eef2ff;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* =========================
+   APP CONTAINER
+========================= */
+
+.app{
+    width:100%;
+    max-width:430px;
+    height:100vh;
+    background:
+    linear-gradient(135deg,#eef5ff,#f7ecff,#fff2f7);
+    position:relative;
+    overflow:hidden;
+}
+
+/* =========================
+   BACKGROUND EFFECTS
+========================= */
+
+.bg-shape{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.4;
+}
+
+.shape1{
+    width:250px;
+    height:250px;
+    background:#8dbdff;
+    top:-50px;
+    left:-80px;
+}
+
+.shape2{
+    width:300px;
+    height:300px;
+    background:#d5a7ff;
+    bottom:-100px;
+    right:-80px;
+}
+
+.shape3{
+    width:180px;
+    height:180px;
+    background:#ffc4dc;
+    top:45%;
+    left:45%;
+}
+
+/* =========================
+   SCREENS
+========================= */
+
+.screen{
+    width:100%;
+    height:100%;
+    padding:28px;
+    position:absolute;
+    top:0;
+    left:0;
+    overflow-y:auto;
+    display:none;
+    animation:fade .4s ease;
+}
+
+.screen.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+
+h1{
+    font-size:34px;
+    font-weight:700;
+    color:#6b78f6;
+}
+
+h2{
+    font-size:28px;
+    font-weight:600;
+    color:#253046;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:#6e7891;
+    font-size:14px;
+    line-height:1.5;
+}
+
+/* =========================
+   CENTER
+========================= */
+
+.center{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+    text-align:center;
+}
+
+/* =========================
+   ICONS
+========================= */
+
+.logo{
+    font-size:70px;
+    margin-bottom:15px;
+    animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0px);}
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+    width:100%;
+    border:none;
+    border-radius:20px;
+    padding:18px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:14px;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,#6ca8ff,#8f79ff);
+    color:white;
+    box-shadow:0 10px 25px rgba(120,120,255,.25);
+}
+
+.btn-primary:hover{
+    transform:translateY(-3px);
+}
+
+.btn-outline{
+    background:white;
+    color:#7d7dff;
+    border:2px solid #cfd0ff;
+}
+
+.btn-outline:hover{
+    background:#f6f6ff;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+    font-size:20px;
+    cursor:pointer;
+    margin-bottom:25px;
+}
+
+/* =========================
+   OPTIONS GRID
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:25px;
+}
+
+.card{
+    background:rgba(255,255,255,.7);
+    backdrop-filter:blur(12px);
+    border-radius:24px;
+    padding:24px 15px;
+    text-align:center;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+    border:2px solid transparent;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card.selected{
+    border:2px solid #8a7dff;
+    transform:scale(1.03);
+}
+
+.card .emoji{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    font-size:15px;
+    color:#2e3549;
+}
+
+/* =========================
+   EMOTION BUTTONS
+========================= */
+
+.emotion-option{
+    width:100%;
+    background:white;
+    padding:20px;
+    border-radius:24px;
+    margin-top:16px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    cursor:pointer;
+    transition:.3s;
+    border:2px solid transparent;
+    box-shadow:0 8px 18px rgba(0,0,0,.05);
+}
+
+.emotion-option:hover{
+    transform:translateY(-3px);
+}
+
+.emotion-option.selected{
+    border:2px solid #7d88ff;
+}
+
+.emotion-icon{
+    font-size:36px;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.input-group{
+    margin-top:30px;
+}
+
+input{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:18px;
+    background:white;
+    font-size:15px;
+    outline:none;
+    box-shadow:0 8px 18px rgba(0,0,0,.05);
+}
+
+.tip{
+    margin-top:12px;
+    color:#8a8ea3;
+    font-size:13px;
+}
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+.suggestion-card{
+    background:white;
+    border-radius:22px;
+    padding:20px;
+    margin-top:18px;
+    box-shadow:0 10px 20px rgba(0,0,0,.06);
+    line-height:1.6;
+    color:#4c5366;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-item{
+    background:white;
+    border-radius:20px;
+    padding:18px;
+    margin-top:16px;
+    box-shadow:0 8px 18px rgba(0,0,0,.06);
+}
+
+.history-date{
+    color:#7b84a0;
+    font-size:13px;
+    margin-top:8px;
+}
+
+/* =========================
+   MANAGER DASHBOARD
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+    margin-top:22px;
+}
+
+.stat-box{
+    background:white;
+    border-radius:22px;
+    padding:18px 12px;
+    text-align:center;
+    box-shadow:0 8px 18px rgba(0,0,0,.05);
+}
+
+.stat-box h3{
+    margin-top:10px;
+    font-size:26px;
+}
+
+.red{ color:#ff5d5d; }
+.yellow{ color:#ffb100; }
+.green{ color:#25c768; }
+
+.section{
+    background:white;
+    margin-top:22px;
+    padding:22px;
+    border-radius:26px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.section-title{
+    font-weight:600;
+    color:#293245;
+    margin-bottom:22px;
+}
+
+/* =========================
+   GRAPH
+========================= */
+
+.bar-item{
+    margin-bottom:24px;
+}
+
+.bar-label{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.bar{
+    width:100%;
+    height:16px;
+    border-radius:999px;
+    background:#f0f0f0;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    border-radius:999px;
+    width:0;
+    transition:1s ease;
+}
+
+.fill.red{
+    background:#ff5d5d;
+}
+
+.fill.yellow{
+    background:#ffb100;
+}
+
+.fill.green{
+    background:#25c768;
+}
+
+/* =========================
+   INSIGHTS
+========================= */
+
+.insight{
+    margin-top:12px;
+    color:#566079;
+    line-height:1.8;
+}
+
+/* =========================
+   SCROLL
+========================= */
+
+::-webkit-scrollbar{
+    width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#c8c8ff;
+    border-radius:999px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
+    <!-- =========================
+         HOME
+    ========================== -->
+
+    <section class="screen active" id="home">
+
+        <div class="center">
+
+            <div class="logo">💧</div>
+
+            <h1>MoodDrop</h1>
+
+            <p class="subtitle" style="margin-top:14px;">
+                Como você está se sentindo hoje?
+            </p>
+
+            <button class="btn btn-primary" onclick="goTo('mode')">
+                Começar
+            </button>
+
+            <button class="btn btn-outline" id="historyHomeBtn" style="display:none;" onclick="openHistory()">
+                Ver Histórico
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         MODE
+    ========================== -->
+
+    <section class="screen" id="mode">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Como deseja usar o MoodDrop?</h2>
+
+        <p class="subtitle">
+            Escolha a forma que deseja utilizar o aplicativo.
+        </p>
+
+        <div style="margin-top:30px;">
+
+            <div class="emotion-option"
+                 onclick="selectMode('pessoal')">
+
+                <div class="emotion-icon">👤</div>
+
+                <div>
+                    <h3>Uso pessoal</h3>
+                </div>
+
+            </div>
+
+            <div class="emotion-option"
+                 onclick="selectMode('empresarial')">
+
+                <div class="emotion-icon">🏢</div>
+
+                <div>
+                    <h3>Uso empresarial</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         PROFILE
+    ========================== -->
+
+    <section class="screen" id="profile">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Qual é o seu perfil?</h2>
+
+        <p class="subtitle">
+            Escolha seu tipo de acesso.
+        </p>
+
+        <div style="margin-top:30px;">
+
+            <div class="emotion-option"
+                 onclick="selectProfile('funcionario')">
+
+                <div class="emotion-icon">🧑‍💻</div>
+
+                <div>
+                    <h3>Funcionário</h3>
+                </div>
+
+            </div>
+
+            <div class="emotion-option"
+                 onclick="openManager()">
+
+                <div class="emotion-icon">👔</div>
+
+                <div>
+                    <h3>Gestor</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         CONCEPT
+    ========================== -->
+
+    <section class="screen" id="concept">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Escolha um conceito</h2>
+
+        <p class="subtitle">
+            Como deseja representar suas emoções?
+        </p>
+
+        <div class="grid">
+
+            <div class="card"
+                 onclick="selectConcept('Máscaras','🎭')">
+
+                <div class="emoji">🎭</div>
+                <h3>Máscaras</h3>
+
+            </div>
+
+            <div class="card"
+                 onclick="selectConcept('Bateria emocional','🔋')">
+
+                <div class="emoji">🔋</div>
+                <h3>Bateria</h3>
+
+            </div>
+
+            <div class="card"
+                 onclick="selectConcept('Clima','🌤️')">
+
+                <div class="emoji">🌤️</div>
+                <h3>Clima</h3>
+
+            </div>
+
+            <div class="card"
+                 onclick="selectConcept('Volume emocional','🎵')">
+
+                <div class="emoji">🎵</div>
+                <h3>Volume</h3>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         EMOTION
+    ========================== -->
+
+    <section class="screen" id="emotion">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Como você está?</h2>
+
+        <p class="subtitle" id="conceptTitle"></p>
+
+        <div id="emotionList"></div>
+
+    </section>
+
+    <!-- =========================
+         WORD
+    ========================== -->
+
+    <section class="screen" id="word">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Descreva seu momento</h2>
+
+        <p class="subtitle">
+            Em uma palavra, como você se sente?
+        </p>
+
+        <div class="input-group">
+
+            <input type="text"
+                   id="wordInput"
+                   placeholder="ansioso, feliz, cansado..." />
+
+            <div class="tip">
+                Dica: seja sincero com suas emoções 💙
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary"
+                onclick="generateSuggestions()">
+
+            Continuar
+
+        </button>
+
+    </section>
+
+    <!-- =========================
+         SUGGESTIONS
+    ========================== -->
+
+    <section class="screen" id="suggestions">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Sugestões para você</h2>
+
+        <div id="suggestionContainer"></div>
+
+        <button class="btn btn-primary"
+                onclick="finishRegister()">
+
+            Finalizar
+
+        </button>
+
+    </section>
+
+    <!-- =========================
+         HISTORY
+    ========================== -->
+
+    <section class="screen" id="history">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Histórico</h2>
+
+        <div id="historyList"></div>
+
+    </section>
+
+    <!-- =========================
+         MANAGER
+    ========================== -->
+
+    <section class="screen" id="manager">
+
+        <button class="back-btn" onclick="goBack()">←</button>
+
+        <h2>Visão da equipe</h2>
+
+        <div class="stats">
+
+            <div class="stat-box">
+                😞
+                <h3 class="red" id="badCount">0</h3>
+                <p>Ruim</p>
+            </div>
+
+            <div class="stat-box">
+                😐
+                <h3 class="yellow" id="mediumCount">0</h3>
+                <p>Médio</p>
+            </div>
+
+            <div class="stat-box">
+                😊
+                <h3 class="green" id="goodCount">0</h3>
+                <p>Bom</p>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                📈 Clima da equipe
+            </div>
+
+            <div class="bar-item">
+
+                <div class="bar-label">
+                    <span>😞 Ruim</span>
+                    <span id="badPercent">0%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill red" id="badBar"></div>
+                </div>
+
+            </div>
+
+            <div class="bar-item">
+
+                <div class="bar-label">
+                    <span>😐 Médio</span>
+                    <span id="mediumPercent">0%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill yellow" id="mediumBar"></div>
+                </div>
+
+            </div>
+
+            <div class="bar-item">
+
+                <div class="bar-label">
+                    <span>😊 Bom</span>
+                    <span id="goodPercent">0%</span>
+                </div>
+
+                <div class="bar">
+                    <div class="fill green" id="goodBar"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <div class="section-title">
+                ⚠️ Insights
+            </div>
+
+            <div class="insight" id="managerInsight"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+
+/* =========================
+   APP STATE
+========================= */
+
+let currentScreen = "home";
+let screenHistory = [];
+
+let appData = {
+    mode:"",
+    profile:"",
+    concept:"",
+    conceptEmoji:"",
+    emotion:"",
+    emotionEmoji:"",
+    level:"",
+    word:""
+};
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function goTo(screenId){
+
+    document.getElementById(currentScreen)
+    .classList.remove("active");
+
+    screenHistory.push(currentScreen);
+
+    currentScreen = screenId;
+
+    document.getElementById(screenId)
+    .classList.add("active");
+}
+
+function goBack(){
+
+    if(screenHistory.length === 0) return;
+
+    document.getElementById(currentScreen)
+    .classList.remove("active");
+
+    currentScreen = screenHistory.pop();
+
+    document.getElementById(currentScreen)
+    .classList.add("active");
+}
+
+/* =========================
+   MODE
+========================= */
+
+function selectMode(mode){
+
+    appData.mode = mode;
+
+    if(mode === "pessoal"){
+        goTo("concept");
+    }else{
+        goTo("profile");
+    }
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+function selectProfile(profile){
+
+    appData.profile = profile;
+
+    goTo("concept");
+}
+
+/* =========================
+   MANAGER
+========================= */
+
+function openManager(){
+
+    updateManagerDashboard();
+
+    goTo("manager");
+}
+
+/* =========================
+   CONCEPT
+========================= */
+
+function selectConcept(name,emoji){
+
+    appData.concept = name;
+    appData.conceptEmoji = emoji;
+
+    document.getElementById("conceptTitle")
+    .innerHTML = "Conceito: " + emoji + " " + name;
+
+    renderEmotions();
+
+    goTo("emotion");
+}
+
+/* =========================
+   EMOTIONS
+========================= */
+
+function renderEmotions(){
+
+    const emotionList =
+    document.getElementById("emotionList");
+
+    emotionList.innerHTML = "";
+
+    const emotions = [
+        {
+            emoji:"😞",
+            title:"Ruim",
+            level:"ruim"
+        },
+        {
+            emoji:"😐",
+            title:"Médio",
+            level:"medio"
+        },
+        {
+            emoji:"😊",
+            title:"Bom",
+            level:"bom"
+        }
+    ];
+
+    emotions.forEach(item=>{
+
+        emotionList.innerHTML += `
+
+        <div class="emotion-option"
+             onclick="selectEmotion(
+             '${item.title}',
+             '${item.emoji}',
+             '${item.level}'
+             )">
+
+            <div class="emotion-icon">
+                ${item.emoji}
+            </div>
+
+            <div>
+                <h3>${item.title}</h3>
+            </div>
+
+        </div>
+
+        `;
+    });
+}
+
+function selectEmotion(name,emoji,level){
+
+    appData.emotion = name;
+    appData.emotionEmoji = emoji;
+    appData.level = level;
+
+    goTo("word");
+}
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+function generateSuggestions(){
+
+    const word =
+    document.getElementById("wordInput")
+    .value.trim();
+
+    if(word === ""){
+        alert("Digite uma palavra.");
+        return;
+    }
+
+    appData.word = word;
+
+    const container =
+    document.getElementById("suggestionContainer");
+
+    let suggestions = [];
+
+    if(appData.mode === "pessoal"){
+
+        if(appData.level === "ruim"){
+
+            suggestions = [
+
+                `Percebemos que você está se sentindo ${word}. Tente fazer uma pausa de 30 segundos e respirar profundamente.`,
+
+                `Sentir-se ${word} faz parte. Que tal desacelerar um pouco hoje?`
+
+            ];
+        }
+
+        else if(appData.level === "medio"){
+
+            suggestions = [
+
+                `Você parece estar se sentindo ${word}. Que tal mudar de ambiente ou beber água?`,
+
+                `Um pequeno ajuste pode melhorar seu momento.`
+
+            ];
+        }
+
+        else{
+
+            suggestions = [
+
+                `Ótimo! Você está se sentindo ${word}. Continue assim 👍`,
+
+                `Aproveite e compartilhe esse momento com alguém importante.`
+
+            ];
+        }
+
+    }else{
+
+        if(appData.level === "ruim"){
+
+            suggestions = [
+
+                `Você pode estar sobrecarregado (${word}). Tente organizar suas tarefas por prioridade.`,
+
+                `Considere conversar com seu gestor sobre sua carga de trabalho.`
+
+            ];
+        }
+
+        else if(appData.level === "medio"){
+
+            suggestions = [
+
+                `Você está em um ritmo moderado (${word}). Faça pequenas pausas para manter o foco.`,
+
+                `Revise suas tarefas e ajuste seu ritmo.`
+
+            ];
+        }
+
+        else{
+
+            suggestions = [
+
+                `Ótimo desempenho! Continue assim.`,
+
+                `Aproveite para colaborar com colegas.`
+
+            ];
+        }
+
+    }
+
+    container.innerHTML = "";
+
+    suggestions.forEach(text=>{
+
+        container.innerHTML += `
+
+        <div class="suggestion-card">
+            ${text}
+        </div>
+
+        `;
+    });
+
+    goTo("suggestions");
+}
+
+/* =========================
+   SAVE HISTORY
+========================= */
+
+function finishRegister(){
+
+    const history =
+    JSON.parse(localStorage.getItem("mooddrop-history"))
+    || [];
+
+    const now = new Date();
+
+    history.unshift({
+
+        concept:appData.concept,
+        conceptEmoji:appData.conceptEmoji,
+        emotion:appData.emotion,
+        emotionEmoji:appData.emotionEmoji,
+        level:appData.level,
+        word:appData.word,
+        date:now.toLocaleDateString("pt-BR"),
+        time:now.toLocaleTimeString("pt-BR")
+
+    });
+
+    localStorage.setItem(
+        "mooddrop-history",
+        JSON.stringify(history)
+    );
+
+    document.getElementById("wordInput").value = "";
+
+    updateHomeButton();
+
+    screenHistory = [];
+
+    document.getElementById(currentScreen)
+    .classList.remove("active");
+
+    currentScreen = "home";
+
+    document.getElementById("home")
+    .classList.add("active");
+}
+
+/* =========================
+   HISTORY SCREEN
+========================= */
+
+function openHistory(){
+
+    renderHistory();
+
+    goTo("history");
+}
+
+function renderHistory(){
+
+    const history =
+    JSON.parse(localStorage.getItem("mooddrop-history"))
+    || [];
+
+    const list =
+    document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+    if(history.length === 0){
+
+        list.innerHTML = `
+
+        <div class="section">
+            Nenhum registro encontrado.
+        </div>
+
+        `;
+
+        return;
+    }
+
+    history.forEach(item=>{
+
+        list.innerHTML += `
+
+        <div class="history-item">
+
+            <strong>
+                ${item.conceptEmoji}
+                ${item.concept}
+            </strong>
+
+            <div style="margin-top:10px;">
+                ${item.emotionEmoji}
+                ${item.emotion}
+                — ${item.word}
+            </div>
+
+            <div class="history-date">
+                ${item.date} • ${item.time}
+            </div>
+
+        </div>
+
+        `;
+    });
+}
+
+/* =========================
+   HOME BUTTON
+========================= */
+
+function updateHomeButton(){
+
+    const history =
+    JSON.parse(localStorage.getItem("mooddrop-history"))
+    || [];
+
+    if(history.length > 0){
+
+        document.getElementById("historyHomeBtn")
+        .style.display = "block";
+    }
+}
+
+updateHomeButton();
+
+/* =========================
+   MANAGER DASHBOARD
+========================= */
+
+function updateManagerDashboard(){
+
+    const history =
+    JSON.parse(localStorage.getItem("mooddrop-history"))
+    || [];
+
+    let bad = 0;
+    let medium = 0;
+    let good = 0;
+
+    history.forEach(item=>{
+
+        if(item.level === "ruim") bad++;
+        if(item.level === "medio") medium++;
+        if(item.level === "bom") good++;
+
+    });
+
+    const total = history.length || 1;
+
+    const badP =
+    Math.round((bad/total)*100);
+
+    const mediumP =
+    Math.round((medium/total)*100);
+
+    const goodP =
+    Math.round((good/total)*100);
+
+    document.getElementById("badCount")
+    .innerText = bad;
+
+    document.getElementById("mediumCount")
+    .innerText = medium;
+
+    document.getElementById("goodCount")
+    .innerText = good;
+
+    document.getElementById("badPercent")
+    .innerText = badP + "%";
+
+    document.getElementById("mediumPercent")
+    .innerText = mediumP + "%";
+
+    document.getElementById("goodPercent")
+    .innerText = goodP + "%";
+
+    setTimeout(()=>{
+
+        document.getElementById("badBar")
+        .style.width = badP + "%";
+
+        document.getElementById("mediumBar")
+        .style.width = mediumP + "%";
+
+        document.getElementById("goodBar")
+        .style.width = goodP + "%";
+
+    },100);
+
+    const insight =
+    document.getElementById("managerInsight");
+
+    if(bad >= medium && bad >= good){
+
+        insight.innerHTML = `
+
+        <strong>
+        Equipe com sinais de estresse.
+        </strong>
+
+        <br><br>
+
+        • Redistribuir tarefas<br>
+        • Fazer reunião rápida<br>
+        • Dar feedback individual
+
+        `;
+    }
+
+    else if(medium >= good){
+
+        insight.innerHTML = `
+
+        <strong>
+        Equipe em ritmo moderado.
+        </strong>
+
+        <br><br>
+
+        • Incentivar pausas rápidas<br>
+        • Melhorar comunicação<br>
+        • Ajustar prioridades
+
+        `;
+    }
+
+    else{
+
+        insight.innerHTML = `
+
+        <strong>
+        Equipe em ótimo estado!
+        </strong>
+
+        <br><br>
+
+        • Continue o bom trabalho<br>
+        • Aproveite para novos projetos<br>
+        • Reforce colaboração entre equipes
+
+        `;
+    }
+
+}
+
+</script>
+
+</body>
+</html>
